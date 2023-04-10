@@ -18,4 +18,10 @@ export class MovieDto
     language: string;
 
     parent_movie: number;
+
+    getMovieObjects() {
+        return {
+            title: this.title
+        }
+    }
 }

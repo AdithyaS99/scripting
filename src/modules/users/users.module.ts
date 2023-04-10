@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { userProviders } from './user.provider';
+import { ConfigModule } from '@nestjs/config';
+import { UsersRepository } from './users.repository';
+import { DatabaseModule } from 'src/core/database/database.module';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
-  providers: [UsersService, ...userProviders],
-    exports: [UsersService],
+  imports: [ConfigModule, DatabaseModule, RedisModule],
+  providers: [UsersService, UsersRepository],
+    exports: [UsersService, UsersRepository],
 })
 export class UsersModule {}

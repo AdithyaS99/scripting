@@ -24,6 +24,6 @@ export const databaseProviders = [{
         const sequelize = new Sequelize(config);
         sequelize.addModels([Movie, User]);
         await sequelize.sync();
-        return sequelize;
+        return sequelize.models;
     },
 }];

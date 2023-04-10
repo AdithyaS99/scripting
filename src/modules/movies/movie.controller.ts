@@ -11,7 +11,8 @@ export class MoviesController {
     @Get()
     async findAll() {
         // get all movies in the db
-        return await this.movieService.findAll();
+        const movies = await this.movieService.findAll();
+        return movies;
     }
 
     @Get(':id')
@@ -32,7 +33,8 @@ export class MoviesController {
     @Post()
     async create(@Body() movie: MovieDto): Promise<movieEntity> {
         // create a new movie and return the newly created movie
-        return await this.movieService.create(movie);
+        const response = await this.movieService.create(movie);
+        return response;
     }
 
     @UseGuards(AuthGuard('jwt'))

@@ -1,33 +1,62 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Movie } from './movie.entity';
 import { MovieDto } from './dto/movie.dto';
-import { User } from '../users/user.entity';
-import { MOVIE_REPOSITORY } from 'src/constants';
+import { MoviesRepository } from './movie.repository';
+import { RedisService } from '../redis/redis.service';
+import { SearchService } from '../search/search.service';
+import { MOVIE_INDEX } from 'src/constants';
+import { query } from 'express';
 
 @Injectable()
 export class MoviesService {
-    constructor(@Inject(MOVIE_REPOSITORY) private readonly movieRepository: typeof Movie) { }
 
+    constructor(@Inject('redisClient') private readonly redisClient: RedisService,
+    private readonly movieRepository: MoviesRepository,
+    @Inject('opensearch-client') private readonly openSearchClient: SearchService) {}
+    
     async create(movie: MovieDto): Promise<Movie> {
-        return await this.movieRepository.create<Movie>(movie);
+        // this.openSearchClient.addDocToIndex(MOVIE_INDEX, movie);
+        return this.movieRepository.create(movie);
     }
 
     async findAll(): Promise<Movie[]> {
-        return await this.movieRepository.findAll<Movie>();
+        // this.openSearchClient.searchAll(MOVIE_INDEX);
+        return this.movieRepository.findAll();
     }
 
     async findOne(id): Promise<Movie> {
-        return await this.movieRepository.findOne({
-        	where: { id },
-    	});
+        // const query = {
+        //     match: {
+        //       id: id
+        //     }
+        //   }
+
+        // this.openSearchClient.searchDoc(MOVIE_INDEX, query);
+        const response = await this.redisClient.getValue(id);
+        console.log(response, JSON.stringify(id));
+        if(response){
+            console.log("\n<<<<\nfrom cache\n<<<<\n");
+            return JSON.parse(await this.redisClient.getValue(id));
+        }
+        else{
+            let movie = await this.movieRepository.findOne(id);
+            this.redisClient.setValue(id, movie);
+            return movie;
+        }
     }
 
     async delete(id) {
-        return await this.movieRepository.destroy({ where: { id } });
+        // this.openSearchClient.deleteDoc(MOVIE_INDEX, id);
+        this.openSearchClient.deleteDoc(MOVIE_INDEX, id);
+        return this.movieRepository.delete(id);
     }
 
     async update(id, data) {
-        const [numberOfAffectedRows, [updatedmovie]] = await this.movieRepository.update({ ...data }, { where: { id }, returning: true });
+        // this.openSearchClient.updateDoc(MOVIE_INDEX, id, data);
+        const numberOfAffectedRows =  this.movieRepository.update(id, data)[0];
+        const updatedmovie =  this.movieRepository.update(id, data)[1];
+        const response = await this.redisClient.getValue(id);
+        this.redisClient.setValue(id, data)
 
         return { numberOfAffectedRows, updatedmovie };
     }

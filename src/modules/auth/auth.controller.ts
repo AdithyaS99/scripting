@@ -1,4 +1,4 @@
-import { Controller, Body, Post, UseGuards, Request } from '@nestjs/common';
+import { Controller, Body, Post, UseGuards, Request, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { UserDto } from '../users/dto/user.dto';
@@ -11,12 +11,42 @@ export class AuthController {
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req) {
-        return await this.authService.login(req.user);
+        let userinfo =  await this.authService.login(req.user);
+        return userinfo;
     }
 
     @UseGuards(DoesUserExist)
     @Post('signup')
     async signUp(@Body() user: UserDto) {
-        return await this.authService.create(user);
+        return this.authService.create(user);
+    }
+
+    @UseGuards(DoesUserExist)
+    @Post('requestOtp')
+    async requestOtp(@Body() payload: { email: string }) {
+        console.log(payload.email)
+        let otp = await this.authService.requestOtp(payload.email);
+        if(!otp)
+        {
+            throw new UnauthorizedException('Invalid user credentials');
+        }
+        else
+        {
+            return otp;
+        }
+    }
+
+    @Post('verifyOtp')
+    async verifyOtp(@Body()  payload: { email: string, otp: string }) {
+        const { email, otp} = payload
+        let trf:boolean= await this.authService.verifyOtp(email, otp);
+        if(!trf)
+        {
+            throw new UnauthorizedException('Otp mismatched or expired. Try again later!');
+        }
+        else
+        {
+            return {'status': 'successful login!'}
+        }
     }
 }
