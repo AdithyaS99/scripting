@@ -3,6 +3,7 @@ import { Movie } from 'src/modules/movies/movie.entity';
 import { User } from 'src/modules/users/user.entity';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../../constants';
 import { databaseConfig } from './database.config';
+import { Show } from 'src/modules/show/show.entity';
 
 export const databaseProviders = [{
     provide: SEQUELIZE,
@@ -22,7 +23,7 @@ export const databaseProviders = [{
            config = databaseConfig.development;
         }
         const sequelize = new Sequelize(config);
-        sequelize.addModels([Movie, User]);
+        sequelize.addModels([Movie, User, Show]);
         await sequelize.sync();
         return sequelize.models;
     },

@@ -10,6 +10,9 @@ import { ShowModule } from './modules/show/show.module';
 import { ScreenModule } from './modules/screen/screen.module';
 import { TheatreModule } from './modules/theatre/theatre.module';
 import { BookingModule } from './modules/booking/booking.module';
+import { SeatModule } from './modules/seat/seat.module';
+import { ShowScreenModule } from './modules/show-screen/show-screen.module';
+import { BookingSeatModule } from './modules/booking-seat/booking-seat.module';
 
 @Module({
     imports: [
@@ -24,6 +27,9 @@ import { BookingModule } from './modules/booking/booking.module';
         ScreenModule,
         TheatreModule,
         BookingModule,
+        SeatModule,
+        ShowScreenModule,
+        BookingSeatModule,
     ]
 })
 export class AppModule { }

@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, BelongsTo, HasMany } from 'sequelize-typescript';
+import { Show } from '../show/show.entity';
 
 @Table
 export class Movie extends Model<Movie> {
@@ -46,4 +47,7 @@ export class Movie extends Model<Movie> {
         allowNull: false,
     })
     parent_movie: number;
+
+    @HasMany(()=>Show)
+    show_id: Show
 }
