@@ -2,6 +2,9 @@ import { MinLength, IsNotEmpty } from "class-validator";
 
 export class MovieDto
 {
+
+    readonly id: Number;
+
     @IsNotEmpty()
     readonly title: string;
 

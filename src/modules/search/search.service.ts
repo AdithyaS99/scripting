@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { Client } from "@opensearch-project/opensearch";
 
 export class SearchService {

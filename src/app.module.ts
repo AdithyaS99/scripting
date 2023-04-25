@@ -13,6 +13,7 @@ import { BookingModule } from './modules/booking/booking.module';
 import { SeatModule } from './modules/seat/seat.module';
 import { ShowScreenModule } from './modules/show-screen/show-screen.module';
 import { BookingSeatModule } from './modules/booking-seat/booking-seat.module';
+import { QueuesModule } from './modules/queues/queues.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { BookingSeatModule } from './modules/booking-seat/booking-seat.module';
         SeatModule,
         ShowScreenModule,
         BookingSeatModule,
+        QueuesModule,
     ]
 })
 export class AppModule { }
