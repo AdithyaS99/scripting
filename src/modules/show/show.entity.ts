@@ -25,11 +25,5 @@ export class Show extends Model<Show> {
     date: string;
 
     @ForeignKey(() => Movie)
-    @HasOne(()=> Movie)
-    @Column
-    ({
-        type: DataType.NUMBER,
-        allowNull: false,
-    })
-    movie_id: number;
+    movieid: number;
 }

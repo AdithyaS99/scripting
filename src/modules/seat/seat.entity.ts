@@ -15,7 +15,6 @@ export class Seat extends Model<Seat> {
     id: number;
 
     @ForeignKey(()=> Screen)
-    @BelongsTo(()=> Screen)
     screen_id: number;
 
     @Column({

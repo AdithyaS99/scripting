@@ -15,7 +15,6 @@ export class ShowScreen extends Model<ShowScreen> {
     id: number;
 
     @ForeignKey(() => Show)
-    @HasOne(()=> Show)
     @Column
     ({
         type: DataType.NUMBER,
@@ -24,7 +23,6 @@ export class ShowScreen extends Model<ShowScreen> {
     show_id: number;
 
     @ForeignKey(() => Screen)
-    @HasOne(()=> Screen)
     @Column
     ({
         type: DataType.NUMBER,

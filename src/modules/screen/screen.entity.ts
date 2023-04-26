@@ -19,7 +19,6 @@ export class Screen extends Model<Screen> {
     name: String;
 
     @ForeignKey(() => Theatre)
-    @BelongsTo(()=>Theatre)
     @Column({
         type: DataType.INTEGER,
         allowNull: false,

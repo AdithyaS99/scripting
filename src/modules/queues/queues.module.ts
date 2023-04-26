@@ -4,10 +4,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UpdateOpenSearchProcessor } from './Processors/UpdateOpenSearch';
 import { QueueService } from './queues.service';
 import { QueueProvider } from './queues.provider';
+import { SearchService } from '../search/search.service';
+import { SearchModule } from '../search/search.module';
+import { MoviesModule } from '../movies/movies.module';
 
-@Module({imports: [
+@Module({
+    imports: [
     BullModule.forRootAsync({
-      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         redis: {
           host: configService.get('REDIS_HOST'),
@@ -19,6 +22,7 @@ import { QueueProvider } from './queues.provider';
     BullModule.registerQueue({
       name: 'update-opensearch-queue'
     }), 
+    SearchModule
   ],
   providers: [QueueService, UpdateOpenSearchProcessor, QueueProvider],
   exports: [QueueService]

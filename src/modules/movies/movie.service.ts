@@ -21,7 +21,7 @@ export class MoviesService {
         const response = await this.movieRepository.create(movie);
         await this.queueService.addCreateJob({
             tableName: 'Movie', 
-            id: movie.id
+            data: movie
         });
         return response;
     }

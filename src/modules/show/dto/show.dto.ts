@@ -1,5 +1,6 @@
 import { MinLength, IsNotEmpty } from "class-validator";
 import { DataType } from "sequelize";
+import { AutoIncrement } from "sequelize-typescript";
 
 export class ShowDto
 {
@@ -9,16 +10,8 @@ export class ShowDto
     @MinLength(3)
     readonly date: string;
 
-    @MinLength(6)
+    @IsNotEmpty()
     movie_id: number;
-
-    @IsNotEmpty()
-    duration: string;
-
-    @IsNotEmpty()
-    language: string;
-
-    parent_movie: number;
 
     getShowObjects() {
         return {

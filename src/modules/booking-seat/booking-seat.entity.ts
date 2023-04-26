@@ -17,7 +17,6 @@ export class BookingSeat extends Model<BookingSeat> {
     id: number;
 
     @ForeignKey(()=> Booking)
-    @BelongsTo(()=> Booking)
     @Column({
         type: DataType.NUMBER,
         allowNull: false,
@@ -25,7 +24,6 @@ export class BookingSeat extends Model<BookingSeat> {
     booking_id: number;
 
     @ForeignKey(()=> Seat)
-    @BelongsTo(()=> Seat)
     @Column({
         type: DataType.NUMBER,
         allowNull: false,

@@ -2,45 +2,32 @@ import { Processor, Process } from '@nestjs/bull';
 import { Client } from 'pg';
 import { ConfigService } from '@nestjs/config';
 import { SearchService } from '../../search/search.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 @Processor('update-opensearch-queue')
 export class UpdateOpenSearchProcessor {
   constructor(
     private readonly configService: ConfigService,
-    private readonly openSearchService: SearchService,
-    private client: Client
+    private readonly openSearchService: SearchService
   ) {
-    const connectionString = this.configService.get<string>(
-        'DATABASE_URL',
-      );
-    client = new Client({
-        connectionString,
-      });
-    client.connect();
+    // const connectionString = this.configService.get<string>(
+    //     'DATABASE_URL',
+    //   );
+    // client = new Client({
+    //     connectionString,
+    //   });
+    // client.connect();
   }
 
   
   @Process('createRecord')
   async createInOpenSearch(job: any) {
     try {
-      const { tableName, recordId } = job.data;
-
-      // Query the database for the record that was written
-      const result = await this.client.query(
-        `SELECT * FROM ${tableName} WHERE id = $1`,
-        [recordId],
-      );
-
-      // Transform the record into a document for the OpenSearch index
-      const document = {
-        id: result.rows[0].id,
-        name: result.rows[0].name,
-        description: result.rows[0].description,
-        // Add more fields as needed
-      };
+      const { tableName, record } = job.data;
 
       // Update the OpenSearch index with the document
-      await this.openSearchService.addDocToIndex('movie', document);
+      await this.openSearchService.addDocToIndex('movie', record);
     } 
     catch(error)
     {

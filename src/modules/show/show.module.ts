@@ -4,9 +4,10 @@ import { RedisModule } from '../redis/redis.module';
 import { ShowsService } from './show.service';
 import { ShowsRepository } from './show.repository';
 import { ShowsController } from './show.controller';
+import { SearchModule } from '../search/search.module';
 
 @Module({
-    imports: [DatabaseModule, RedisModule],
+    imports: [DatabaseModule, RedisModule, SearchModule],
     providers: [ShowsService, ShowsRepository],
     controllers: [ShowsController],
     exports: [ShowsService],

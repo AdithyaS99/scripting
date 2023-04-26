@@ -1,8 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Client } from "@opensearch-project/opensearch";
 
+@Injectable()
 export class SearchService {
-    constructor(@Inject('opensearch-client') private readonly opensearchClient: Client){}
+    constructor(@Inject('opensearch-client') private readonly opensearchClient: Client){
+
+    }
 
     async createIndex(index_name)
     {

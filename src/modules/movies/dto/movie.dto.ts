@@ -22,6 +22,8 @@ export class MovieDto
 
     parent_movie: number;
 
+    show_id: number;
+
     getMovieObjects() {
         return {
             title: this.title

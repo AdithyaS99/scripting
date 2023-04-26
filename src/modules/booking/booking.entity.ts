@@ -28,7 +28,6 @@ export class Booking extends Model<Booking> {
     date: string;
 
     @ForeignKey(()=> User)
-    @BelongsTo(()=> User)
     @Column({
         type: DataType.NUMBER,
         allowNull: false,
@@ -36,7 +35,6 @@ export class Booking extends Model<Booking> {
     user_id: number;
 
     @ForeignKey(()=> ShowScreen)
-    @BelongsTo(()=> ShowScreen)
     @Column({
         type: DataType.NUMBER,
         allowNull: false,
@@ -44,7 +42,6 @@ export class Booking extends Model<Booking> {
     show_screen_id: number;
 
     @ForeignKey(()=> Movie)
-    @BelongsTo(()=> Movie)
     @Column({
         type: DataType.NUMBER,
         allowNull: false,
